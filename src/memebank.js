@@ -2,16 +2,12 @@ import Discord from 'discord.js';
 import MCCollector from './MCCollector.js';
 
 const bot = new Discord.Client();
-const mcs = new MCCollector();
+const mcs = new MCCollector(bot, (mc, collection) => { return true; });
 
-mcs.on('add', (channel) => { mcs.handle(channel); });
+mcs.on('add', mcs.listener);
 
 bot.on('ready', () => {
-  bot.channels.tap((channel) => {
-    if (channel.type === 'text') {
-      mcs.emit('add', channel);
-    } 
-  })
+  bot.channels.tap((channel) => { mcs.emit('add', channel); });
 });
 
 bot.on('error', console.error);
