@@ -1,0 +1,10 @@
+# node
+node_modules
+package-lock.json
+
+# macos
+.DS_Store
+
+# build
+build
+run.sh
