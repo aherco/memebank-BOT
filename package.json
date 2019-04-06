@@ -4,7 +4,7 @@
   "description": "discord channel photo albums",
   "main": "memebank.js",
   "scripts": {
-    "build": "babel src -d build"
+    "build": "sh run.sh"
   },
   "repository": {
     "type": "git",
