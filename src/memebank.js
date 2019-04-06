@@ -1,11 +1,11 @@
 import Discord from 'discord.js';
-import MCCollector from './MCCollector.js';
+import BatchMessageCollector from './BatchMessageCollector.js';
 
 const bot = new Discord.Client();
-const mcs = new MCCollector(bot, (channel, collection) => { return channel.type === 'text'; });
+const bmcs = new BatchMessageCollector(bot, (channel, collection) => { return channel.type === 'text'; });
 
-mcs.on('add', mcs.listener);
-bot.on('ready', () => { bot.channels.tap((channel) => { mcs.emit('add', channel); }); });
+bmcs.on('add', bmcs.listener);
+bot.on('ready', () => { bot.channels.tap((channel) => { bmcs.emit('add', channel); }); });
 
 bot.on('error', console.error);
 
