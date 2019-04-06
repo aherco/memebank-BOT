@@ -1,4 +1,6 @@
 import Discord from 'discord.js';
+import request from 'superagent';
+
 import MessageCollector from './MessageCollector.js';
 import Item from './Item.js';
 
@@ -12,7 +14,13 @@ export default class BatchMessageCollector extends Discord.Collector {
 	if (this.batch.size > 0) {
 	  // send the batch to the api here
 	  console.log('Batch size: ', this.batch.size);
-	  console.log(this.batch);
+	  console.log([...this.batch]);
+	  
+          request
+	    .post('https://7g8anxmwm7.execute-api.us-east-1.amazonaws.com/dev/items')
+	    .send({ batch: [...this.batch.values()] })
+	  ;  
+	  
 	  this.batch = new Discord.Collection();
 	}
       }, 5000);
@@ -26,7 +34,7 @@ export default class BatchMessageCollector extends Discord.Collector {
 	for (const item in val.embeds) {
 	  if (val.embeds[item].type === 'image') {
 	    accumulator.set(
-	      val.embeds[item].id,
+	      val.embeds[item].message.id + item,
               new Item(val.guild.id, val.channel.id, val.embeds[item].url),
 	    );
 	  }
@@ -34,7 +42,10 @@ export default class BatchMessageCollector extends Discord.Collector {
 
 	val.attachments.tap((attachment) => {
 	  if (attachment.url.endsWith('.jpg')) {
-	    accumulator.set(attachment.id, new Item(val.guild.id, val.channel.id, attachment.url));
+	    accumulator.set(
+	      attachment.id,
+	      new Item(val.guild.id, val.channel.id, attachment.url)
+	    );
 	  }	 
 	});
 
