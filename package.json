@@ -17,7 +17,8 @@
   },
   "homepage": "https://github.com/aherco/memebank-BOT#readme",
   "dependencies": {
-    "discord.js": "^11.4.2"
+    "discord.js": "^11.4.2",
+    "superagent": "^5.0.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.4.3",
