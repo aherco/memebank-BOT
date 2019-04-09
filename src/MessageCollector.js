@@ -31,20 +31,21 @@ export default class MessageCollector extends Discord.MessageCollector {
       ;
     }
 
-    message.attachments.tap((attachment) => {
-      request.head(attachment.url)
-        .then((res) => {
-          if (this.acceptedUrlTypes.includes(res.type)) {
-            this.collected.set(
-              attachment.url + message.id,
-              new Item(message.guild.id, message.channel.id, attachment.url)
-            );
-          }
-        })
-        .catch((err) => { /* catch the error to keep node from complaining then do nothing */ })
-      ;
-    });
-
+    if (message.attachments.size > 0) {
+      message.attachments.tap((attachment) => {
+        request.head(attachment.url)
+          .then((res) => {
+            if (this.acceptedUrlTypes.includes(res.type)) {
+              this.collected.set(
+                attachment.url + message.id,
+                new Item(message.guild.id, message.channel.id, attachment.url)
+              );
+            }
+          })
+          .catch((err) => { /* catch the error to keep node from complaining then do nothing */ })
+        ;
+      });
+    }
   }
 
   // override the inherited handler to run the urlParser on each message
