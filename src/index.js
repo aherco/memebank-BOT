@@ -6,7 +6,6 @@ const bmcs = new BatchMessageCollector(bot, (channel, collection) => { return ch
 
 bmcs.on('addChannel', bmcs.listener);
 bot.on('ready', () => { bot.channels.tap((channel) => { bmcs.emit('addChannel', channel); }); });
-
 bot.on('error', console.error);
 
 bot.login(process.env.TOKEN);

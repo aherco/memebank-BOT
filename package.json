@@ -2,7 +2,7 @@
   "name": "memebank-BOT",
   "version": "1.0.0",
   "description": "discord channel photo albums",
-  "main": "memebank.js",
+  "main": "index.js",
   "scripts": {
     "build": "sh run.sh"
   },
