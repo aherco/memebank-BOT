@@ -4,10 +4,9 @@ import BatchMessageCollector from './BatchMessageCollector.js';
 const bot = new Discord.Client();
 const bmc = new BatchMessageCollector(bot, (channel, collection) => { return channel.type === 'text'; });
 
-// adds channel to bmc
 const addChannel = (channel) => { bmc.emit('addChannel', channel); };
 const deleteChannel = (channel) => { bmc.collected.delete(channel.id); };
-bmcs.on('addChannel', bmc.listener);
+bmc.on('addChannel', bmc.listener);
 
 bot.on('ready', () => { bot.channels.tap(addChannel); });
 bot.on('error', console.error);

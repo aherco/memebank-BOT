@@ -17,10 +17,12 @@ export default class BatchMessageCollector extends Discord.Collector {
     	  console.log('Batch size: ', this.batch.size);
     	  console.log([...this.batch.values()]);
 
-        // request
-    	  //   .post('https://7g8anxmwm7.execute-api.us-east-1.amazonaws.com/dev/items')
-    	  //   .send({ batch: [...this.batch.values()] })
-    	  // ;
+        request
+    	    .post('https://7g8anxmwm7.execute-api.us-east-1.amazonaws.com/dev/items')
+    	    .send({ batch: [...this.batch.values()] })
+          .then((res) => { /* does not add items to db unless .then() is called */ })
+          .catch((err) => { /* kinda same with this one, i will look into it */ })
+    	  ;
 
   	    this.batch = new Discord.Collection();
       }
