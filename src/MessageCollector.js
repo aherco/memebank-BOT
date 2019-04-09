@@ -15,8 +15,8 @@ export default class MessageCollector extends Discord.MessageCollector {
 
   urlParser(message) {
 
+    // farm urls from the content of the message
     const content = message.content.split(" ");
-
     for (const url in content) {
       request.head(content[url])
         .then((res) => {
@@ -31,6 +31,7 @@ export default class MessageCollector extends Discord.MessageCollector {
       ;
     }
 
+    // farm urls from the attachments of the message
     if (message.attachments.size > 0) {
       message.attachments.tap((attachment) => {
         request.head(attachment.url)
