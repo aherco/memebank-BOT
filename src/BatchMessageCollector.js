@@ -2,7 +2,6 @@ import Discord from 'discord.js';
 import request from 'superagent';
 
 import MessageCollector from './MessageCollector.js';
-import Item from './Item.js';
 
 export default class BatchMessageCollector extends Discord.Collector {
   constructor(client, filter, options = {}) {

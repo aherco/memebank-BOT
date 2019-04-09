@@ -22,7 +22,7 @@ export default class MessageCollector extends Discord.MessageCollector {
         .then((res) => {
           if (this.acceptedUrlTypes.includes(res.type)) {
             this.collected.set(
-              content[url],
+              content[url] + message.id,
               new Item(message.guild.id, message.channel.id, content[url])
             );
           }
@@ -36,7 +36,7 @@ export default class MessageCollector extends Discord.MessageCollector {
         .then((res) => {
           if (this.acceptedUrlTypes.includes(res.type)) {
             this.collected.set(
-              attachment.url,
+              attachment.url + message.id,
               new Item(message.guild.id, message.channel.id, attachment.url)
             );
           }
