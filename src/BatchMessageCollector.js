@@ -37,6 +37,7 @@ export default class BatchMessageCollector extends Discord.Collector {
   }
 
   handle(channel) {
+    if (channel.type !== 'text') return null;
     const mc = new MessageCollector(this.updateBatch, channel);
     return { key: mc.channel.id, value: mc };
   }

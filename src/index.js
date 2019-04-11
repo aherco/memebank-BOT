@@ -2,10 +2,16 @@ import Discord from 'discord.js';
 import BatchMessageCollector from './BatchMessageCollector.js';
 
 const bot = new Discord.Client();
-const bmc = new BatchMessageCollector(bot, (channel, collection) => { return channel.type === 'text'; });
+const bmc = new BatchMessageCollector(bot, () => { return true; });
 
 const addChannel = (channel) => { bmc.emit('addChannel', channel); };
-const deleteChannel = (channel) => { bmc.collected.delete(channel.id); };
+const deleteChannel = (channel) => {
+  // Unhook the interval that updates the bmc batch, then delete it from the bmc
+  if (bmc.collected.has(channel.id)) {
+    bmc.collected.get(channel.id).stop();
+    bmc.collected.delete(channel.id);
+  }
+};
 bmc.on('addChannel', bmc.listener);
 
 bot.on('ready', () => { bot.channels.tap(addChannel); });

@@ -10,7 +10,11 @@ export default class MessageCollector extends Discord.MessageCollector {
     // accepted response types from http head requests
     this.acceptedUrlTypes = ['image/jpeg', 'image/png', 'image/gif'];
 
-    setInterval(() => { updateBatch(this); }, 1000);
+    this.interval = setInterval(() => { updateBatch(this); }, 1000);
+  }
+
+  cleanup() {
+    clearInterval(this.interval);
   }
 
   urlParser(message) {
