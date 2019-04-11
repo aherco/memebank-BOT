@@ -18,12 +18,13 @@ export default class MessageCollector extends Discord.MessageCollector {
     // farm urls from the content of the message
     const content = message.content.split(" ");
     for (const url in content) {
-      request.head(content[url])
+      const currentUrl = content[url];
+      request.head(currentUrl)
         .then((res) => {
           if (this.acceptedUrlTypes.includes(res.type)) {
             this.collected.set(
-              content[url] + message.id,
-              new Item(message.guild.id, message.channel.id, content[url])
+              currentUrl + message.id,
+              new Item(message.guild.id, message.channel.id, currentUrl)
             );
           }
         })
@@ -34,12 +35,13 @@ export default class MessageCollector extends Discord.MessageCollector {
     // farm urls from the attachments of the message
     if (message.attachments.size > 0) {
       message.attachments.tap((attachment) => {
-        request.head(attachment.url)
+        const currentUrl = attachment.url;
+        request.head(currentUrl)
           .then((res) => {
             if (this.acceptedUrlTypes.includes(res.type)) {
               this.collected.set(
-                attachment.url + message.id,
-                new Item(message.guild.id, message.channel.id, attachment.url)
+                currentUrl + message.id,
+                new Item(message.guild.id, message.channel.id, currentUrl)
               );
             }
           })
