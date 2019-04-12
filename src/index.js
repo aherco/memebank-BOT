@@ -6,7 +6,7 @@ const bmc = new BatchMessageCollector(bot, () => { return true; });
 
 const addChannel = (channel) => { bmc.emit('addChannel', channel); };
 const deleteChannel = (channel) => {
-  // Unhook the interval that updates the bmc batch, then delete it from the bmc
+  // unhook the interval that updates the bmc batch, then delete it from the bmc
   if (bmc.collected.has(channel.id)) {
     bmc.collected.get(channel.id).stop();
     bmc.collected.delete(channel.id);
@@ -31,11 +31,11 @@ bot.on('message', (message) => {
       .setDescription(`This message will self destruct in 10 seconds.`)
       .setTimestamp()
       .setThumbnail('https://cdn.discordapp.com/attachments/561521713901338635/566031952684253194/unknown.png')
-      .setURL(`http://localhost:3000/${message.channel.guild.id}`)
+      .setURL(`http://localhost:3000/${message.channel.guild.name}/${message.channel.name}/${message.channel.id}`)
       .setColor(0x1f912f)
 
-    message.delete();
-    message.channel.send(response).then((msg) => { msg.delete(10000); });
+    message.delete().catch(console.error);
+    message.channel.send(response).then((msg) => { msg.delete(10000); }).catch(console.error);
   }
 });
 
