@@ -15,6 +15,9 @@ const deleteChannel = (channel) => {
 bmc.on('addChannel', bmc.listener);
 
 bot.on('ready', () => { bot.channels.tap(addChannel); });
+// bot.on('resume', () => { bot.channels.tap(addChannel); });
+// bot.on('reconnecting', () => { bot.channels.tap(deleteChannel); });
+
 bot.on('error', console.error);
 
 bot.on('guildCreate', (guild) => { guild.channels.tap(addChannel); });
