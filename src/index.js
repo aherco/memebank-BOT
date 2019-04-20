@@ -32,7 +32,7 @@ bot.on('messageDelete', deleteMessage);
 bot.on('message', (message) => {
   if (message.mentions.users.has(bot.user.id) && bmc.collected.has(message.channel.id)) {
 
-    const url = `http://localhost:3000/${message.channel.guild.name.replace(/ /g, '-')}/${message.channel.name}/${message.channel.id}`;
+    const url = `http://www.memebank.me/${message.channel.guild.name.replace(/ /g, '-')}/${message.channel.name}/${message.channel.id}`;
     const response = new Discord.RichEmbed()
       .setTitle(`View #${message.channel.name}'s memebank here!`)
       .setDescription(`This message will self destruct in 10 seconds.`)
