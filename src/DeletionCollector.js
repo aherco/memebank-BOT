@@ -4,6 +4,7 @@ import request from 'superagent';
 export default class DeletionCollector extends Discord.Collector {
   constructor(client, filter, options = {}) {
     super(client, filter, options);
+    this.handle = this.handle.bind(this);
 
     setInterval(() => {
     	if (this.collected.size > 0) {
@@ -24,7 +25,7 @@ export default class DeletionCollector extends Discord.Collector {
   }
 
   handle(message) {
-    console.log(message.id);
+    if (this.client.user.id === message.author.id) return null;
     return { key: message.id, value: message.id };
   }
 }
