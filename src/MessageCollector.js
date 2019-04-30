@@ -1,7 +1,6 @@
 import Discord from 'discord.js';
-import request from 'superagent';
 
-import Item from './Item.js';
+import { parseContent, parseAttachments } from './UrlParsers.js';
 
 export default class MessageCollector extends Discord.MessageCollector {
   constructor(updateBatch, channel, filter, options = {}) {
@@ -20,39 +19,13 @@ export default class MessageCollector extends Discord.MessageCollector {
   urlParser(message) {
 
     // farm urls from the content of the message
-    const content = message.content.split(" ");
-    for (const url in content) {
-      const currentUrl = content[url];
-      request.head(currentUrl)
-        .then((res) => {
-          if (this.acceptedUrlTypes.includes(res.type)) {
-            this.collected.set(
-              currentUrl + message.id,
-              new Item(message.guild.id, message.channel.id, message.id, currentUrl)
-            );
-          }
-        })
-        .catch((err) => { /* catch the error to keep node from complaining then do nothing */ })
-      ;
-    }
+    parseContent(message, this); 
 
     // farm urls from the attachments of the message
     if (message.attachments.size > 0) {
-      message.attachments.tap((attachment) => {
-        const currentUrl = attachment.url;
-        request.head(currentUrl)
-          .then((res) => {
-            if (this.acceptedUrlTypes.includes(res.type)) {
-              this.collected.set(
-                currentUrl + message.id,
-                new Item(message.guild.id, message.channel.id, message.id, currentUrl)
-              );
-            }
-          })
-          .catch((err) => { /* catch the error to keep node from complaining then do nothing */ })
-        ;
-      });
+      parseAttachments(message, this); 
     }
+
   }
 
   // override the inherited handler to run the urlParser on each message
