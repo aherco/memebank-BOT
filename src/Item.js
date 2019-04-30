@@ -1,8 +1,9 @@
 export default class Item {
-  constructor(guild_id, channel_id, message_id, content) {
-    this.guild_id = guild_id;
-    this.channel_id = channel_id;
-    this.message_id = message_id;
+  constructor(message, content, type) {
+    this.guild_id = message.guild.id;
+    this.channel_id = message.channel.id;
+    this.message_id = message.id;
     this.content = content;
+    this.type = type;
   }
 }

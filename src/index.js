@@ -22,7 +22,10 @@ const deleteChannel = (channel) => {
 dc.on('deleteMessage', dc.listener);
 bmc.on('addChannel', bmc.listener);
 
-bot.on('ready', () => { bot.channels.tap(addChannel); });
+bot.on('ready', () => { 
+  console.log('memebank online!');
+  bot.channels.tap(addChannel);
+});
 bot.on('error', console.error);
 
 bot.on('guildCreate', (guild) => { guild.channels.tap(addChannel); });

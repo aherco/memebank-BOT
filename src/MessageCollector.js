@@ -6,9 +6,7 @@ export default class MessageCollector extends Discord.MessageCollector {
   constructor(updateBatch, channel, filter, options = {}) {
     super(channel, filter, options);
 
-    // accepted response types from http head requests
-    this.acceptedUrlTypes = ['image/jpeg', 'image/png', 'image/gif'];
-
+    
     this.interval = setInterval(() => { updateBatch(this); }, 1000);
   }
 
