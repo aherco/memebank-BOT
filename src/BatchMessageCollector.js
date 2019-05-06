@@ -17,7 +17,7 @@ export default class BatchMessageCollector extends Discord.Collector {
     	  console.log([...this.batch.values()]);
 
         request
-	  .post(`${process.env.API_ENDPOINT}/items`)
+	  .post(`${process.env.API_ENDPOINT}/items/`)
           .set('x-api-key', process.env.API_KEY)
           .send({ batch: [...this.batch.values()] })
           .then((res) => { /* does not add items to db unless .then() is called */ })

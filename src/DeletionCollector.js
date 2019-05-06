@@ -13,7 +13,7 @@ export default class DeletionCollector extends Discord.Collector {
     	  console.log([...this.collected.values()]);
 
           request
-	    .delete(`${process.env.API_ENDPOINT}/items`)
+	    .delete(`${process.env.API_ENDPOINT}/items/`)
             .send({ batch: [...this.collected.values()] })
             .then((res) => { /* does not add items to db unless .then() is called */ })
             .catch((err) => { /* kinda same with this one, i will look into it */ })
