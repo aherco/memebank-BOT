@@ -2,57 +2,59 @@ import request from 'superagent';
 import Item from './Item.js';
 
 // accepted response types from http head requests
-const acceptedUrlTypes = ['image/jpeg', 'image/png', 'image/gif'];
+const imgTypes = ['image/jpeg', 'image/png', 'image/gif'];
+const vidTypes = ['video/webm', 'video/mp4'];
 
 const types = {
   img: 'img',
   ifr: 'ifr',
+  vid: 'vid',
 };
 
 export const parseContent = (message, mc) => {
   const content = message.content.split(/\n| /);
   for (const url in content) {
     if (content[url].startsWith('https://gfycat.com/')) {
-      acceptGfycat(content[url], message, mc);
+      validateGfycat(content[url], message, mc);
     } else {
-      acceptImg(content[url], message, mc);    
+      validateUrl(content[url], message, mc);    
     }
   }
 };
 
 export const parseAttachments = (message, mc) => {
   message.attachments.tap((attachment) => {
-    acceptImg(attachment.url, message, mc); 
+   validateUrl(attachment.url, message, mc); 
   });
 };
 
-const acceptImg = (url, message, mc) => {
-  return request.head(url)
-    .then((res) => {
-      if (acceptedUrlTypes.includes(res.type)) {
-        mc.collected.set(
-          url + message.id,
-          new Item(message, url, types.img),
-        );
-      }
-    })
-    .catch((err) => { /* catch the error to keep node from complaining then do nothing */ })
-  ;
+const acceptUrl = (url, message, mc, type) => {
+  mc.collected.set(
+    url + message.id,
+    new Item(message, url, type),
+  );
 };
 
-const acceptGfycat = (url, message, mc) => {
-  const endIndex = url.includes('-') ? url.indexOf('-') : url.length;
-  const  ifr = `https://gfycat.com/ifr/${url.substring(url.lastIndexOf('/') + 1, endIndex)}?autoplay=0&hd=1`;
+const validateUrl = (url, message, mc) => {
+  request.head(url).then((res) => {
+    let type;
+    if (imgTypes.includes(res.type)) {
+      type = types.img;
+    } else if (vidTypes.includes(res.type)) {
+      type = types.vid;
+    }
+    if (type) acceptUrl(url, message,mc, type);
+  }).catch((err) => {});
+};
 
-  return request.head(ifr)
-    .then((res) => {
-      mc.collected.set(
-        ifr + message.id,
-        new Item(message, ifr, types.ifr),
-      );
-    })
-    .catch((err) => { /* catch the error to keep node from complaining then do nothing */ })
-  ;
+const validateGfycat = (url, message, mc) => {
+  const endIndex = url.includes('-') ? url.indexOf('-') : url.length;
+  const  ifr = `https://gfycat.com/ifr/${url.substring(url.lastIndexOf('/') + 1, endIndex)}`;
+
+  request.head(ifr).then((res) => {
+    acceptUrl(ifr, message, mc, types.ifr);    
+  }).catch((err) => {});
+
 };
 
 
