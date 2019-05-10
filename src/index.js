@@ -36,7 +36,7 @@ bot.on('channelDelete', deleteChannel);
 
 bot.on('messageDelete', deleteMessage);
 bot.on('message', (message) => {
-  if (message.mentions.users.has(bot.user.id) && bmc.collected.has(message.channel.id)) {
+  if (message.mentions.users.has(bot.user.id) && bmc.collected.has(message.channel.id) && !message.author.bot) {
 
     const url = `${process.env.DOMAIN}/${message.channel.guild.name.replace(/ /g, '-')}/${message.channel.name}/${message.channel.id}`;
     const response = new Discord.RichEmbed()

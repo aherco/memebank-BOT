@@ -28,7 +28,8 @@ export default class MessageCollector extends Discord.MessageCollector {
 
   // override the inherited handler to run the urlParser on each message
   handle(message) {
-    if (message.channel.id !== this.channel.id) return null;
+    if (message.channel.id !== this.channel.id || message.author.bot) return null;
+    console.log(message);
     this.urlParser(message);
     return null;
   }
