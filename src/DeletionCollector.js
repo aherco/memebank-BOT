@@ -25,7 +25,7 @@ export default class DeletionCollector extends Discord.Collector {
   }
 
   handle(message) {
-    if (this.client.user.id === message.author.id) return null;
+    if (this.client.user.id === message.author.id || message.author.bot) return null;
     return { key: message.id, value: message.id };
   }
 }

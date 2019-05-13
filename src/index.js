@@ -35,6 +35,8 @@ bot.on('channelCreate', addChannel);
 bot.on('channelDelete', deleteChannel);
 
 bot.on('messageDelete', deleteMessage);
+bot.on('messageDeleteBulk', (messages) => { messages.tap(deleteMessage); });
+
 bot.on('message', (message) => {
   if (message.mentions.users.has(bot.user.id) && bmc.collected.has(message.channel.id) && !message.author.bot) {
 
