@@ -1,4 +1,5 @@
 import Discord from 'discord.js';
+import DBL from 'dblapi.js';
 import env from 'dotenv';
 
 import BatchMessageCollector from './BatchMessageCollector.js';
@@ -6,6 +7,7 @@ import DeletionCollector from './DeletionCollector.js';
 
 env.config();
 const bot = new Discord.Client();
+const dbl = new DBL(process.env.DBL_TOKEN, bot);
 const bmc = new BatchMessageCollector(bot, () => { return true; });
 const dc = new DeletionCollector(bot, () => { return true; });
 
@@ -25,7 +27,9 @@ bmc.on('addChannel', bmc.listener);
 bot.on('ready', () => { 
   console.log('memebank online!');
   bot.channels.tap(addChannel);
-});
+  setInterval(() => { dbl.postStats(bot.guilds.size, 0, 1); }, 1500000);
+}); 
+
 bot.on('error', console.error);
 
 bot.on('guildCreate', (guild) => { guild.channels.tap(addChannel); });
