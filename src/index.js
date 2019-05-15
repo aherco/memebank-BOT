@@ -44,7 +44,7 @@ bot.on('messageDeleteBulk', (messages) => { messages.tap(deleteMessage); });
 bot.on('message', (message) => {
   if (message.mentions.users.has(bot.user.id) && bmc.collected.has(message.channel.id) && !message.author.bot) {
 
-    const url = `${process.env.DOMAIN}/${message.channel.guild.name.replace(/ /g, '-')}/${message.channel.name}/${message.channel.id}`;
+	  const url = `${process.env.DOMAIN}/${message.channel.guild.name.replace(/ /g, '-').replace(/\?|\//g, '')}/${message.channel.name}/${message.channel.id}`;
 
     const response = new Discord.RichEmbed()
       .setTitle(`View #${message.channel.name}'s memebank here!`)
