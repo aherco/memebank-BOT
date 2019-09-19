@@ -24,7 +24,7 @@ export default class BatchMessageCollector extends Discord.Collector {
           .catch((err) => { /* kinda same with this one, i will look into it */ })
     	  ;
 
-  	    this.batch = new Discord.Collection();
+  	this.batch = new Discord.Collection();
       }
     }, 5000);
   }

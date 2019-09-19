@@ -5,8 +5,6 @@ import { parseContent, parseAttachments } from './UrlParsers.js';
 export default class MessageCollector extends Discord.MessageCollector {
   constructor(updateBatch, channel, filter, options = {}) {
     super(channel, filter, options);
-
-    
     this.interval = setInterval(() => { updateBatch(this); }, 1000);
   }
 
